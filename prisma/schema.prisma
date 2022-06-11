@@ -8,31 +8,118 @@ generator client {
 }
 
 model User {
-  id    String @id @default(cuid())
-  email String @unique
+  id       String    @id @default(cuid())
+  email    String    @unique
+  password Password?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  password Password?
-  notes    Note[]
+  // Relations
+
+  // recipes    Recipe[]
+  households Household[]
+}
+
+model Household {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  users   User[]
+  // recipes Recipe[]
 }
 
 model Password {
   hash String
 
+  // Relations
+
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String @unique
 }
 
-model Note {
+model Recipe {
   id    String @id @default(cuid())
   title String
-  body  String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId String
+  // wantToDo Boolean   @default(false)
+  // lastDone DateTime?
+
+  image String?
+
+  // Relations
+
+  // household Household @relation(fields: [householdId], references: [id])
+  // householdId Int
+
+  // user   User   @relation(fields: [userId], references: [id])
+  // userId String
+
+  // source   Source @relation(fields: [sourceId], references: [id])
+  // sourceId String @unique
+
+  ingredients IngredientInRecipe[]
+  steps       Step[]
+}
+
+model Source {
+  id String @id @default(cuid())
+
+  URL   String?
+  image String?
+
+  // Relations
+
+  type   SourceType @relation(fields: [typeId], references: [id])
+  typeId Int
+
+  // recipe Recipe?
+}
+
+model SourceType {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  // Relations
+
+  recipes Source[]
+}
+
+model IngredientInRecipe {
+  id String @id @default(cuid())
+
+  amount String
+
+  // Relations
+
+  recipe   Recipe? @relation(fields: [recipeId], references: [id])
+  recipeId String?
+
+  type   IngredientType @relation(fields: [typeId], references: [id])
+  typeId Int
+}
+
+model IngredientType {
+  id Int @id @default(autoincrement())
+
+  name  String
+  image String
+
+  // Relations
+
+  ingredients IngredientInRecipe[]
+}
+
+model Step {
+  id String @id @default(cuid())
+
+  step String
+
+  // Relations
+
+  recipe   Recipe? @relation(fields: [recipeId], references: [id])
+  recipeId String?
 }

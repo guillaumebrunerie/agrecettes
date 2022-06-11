@@ -1,44 +1,81 @@
 import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcryptjs";
+// import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
 async function seed() {
-  const email = "rachel@remix.run";
+  // const stockholm = await prisma.household.create({
+  //   data: {
+  //     name: "Fågelstavägen 44",
+  //   }
+  // });
 
-  // cleanup the existing database
-  await prisma.user.delete({ where: { email } }).catch(() => {
-    // no worries if it doesn't exist yet
-  });
+  // const guillaume = await prisma.user.create({
+  //   data: {
+  //     email: "guillaume.brunerie@gmail.com",
+  //     password: {
+  //       create: {
+  //         hash: await bcrypt.hash("password", 10),
+  //       },
+  //     },
+  //     households: {
+  //       connect: [{id: stockholm.id}]
+  //     },
+  //   },
+  // });
 
-  const hashedPassword = await bcrypt.hash("racheliscool", 10);
+  // const sourceTypeGuillaume = await prisma.sourceType.create({
+  //   data: {
+  //     name: "Guillaume"
+  //   },
+  // })
 
-  const user = await prisma.user.create({
+  const nutella = await prisma.ingredientType.create({
     data: {
-      email,
-      password: {
-        create: {
-          hash: hashedPassword,
-        },
+      name: "Nutella",
+      image: "",
+    }
+  })
+
+  const whippedCream = await prisma.ingredientType.create({
+    data: {
+      name: "Crème chantilly",
+      image: "",
+    }
+  })
+
+  await prisma.recipe.create({
+    data: {
+      title: "Nutella à la crème chantilly",
+      // user: {
+      //   connect: {id: guillaume.id},
+      // },
+      // household: {
+      //   connect: {id: stockholm.id},
+      // },
+      // source: {
+      //   create: {
+      //     typeId: sourceTypeGuillaume.id
+      //   }
+      // },
+      ingredients: {
+        create: [{
+          typeId: nutella.id,
+          amount: "a lot",
+        }, {
+          typeId: whippedCream.id,
+          amount: "even more",
+        }]
       },
-    },
-  });
-
-  await prisma.note.create({
-    data: {
-      title: "My first note",
-      body: "Hello, world!",
-      userId: user.id,
-    },
-  });
-
-  await prisma.note.create({
-    data: {
-      title: "My second note",
-      body: "Hello, world!",
-      userId: user.id,
-    },
-  });
+      steps: {
+        create: [{
+          step: "Servir le nutella et la chantilly."
+        }, {
+          step: "Déguster!"
+        }]
+      }
+    }
+  })
 
   console.log(`Database has been seeded. 🌱`);
 }

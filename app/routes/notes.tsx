@@ -1,4 +1,6 @@
-import type { LoaderFunction } from "@remix-run/node";
+export {}
+
+/*import type { LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
 
@@ -72,3 +74,4 @@ export default function NotesPage() {
     </div>
   );
 }
+*/
