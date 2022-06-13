@@ -26,7 +26,7 @@ const badRequest = (data: ActionData) => (
 export const action: ActionFunction = async ({request}) => {
 	const fileUploadHandler = unstable_composeUploadHandlers(
 		unstable_createFileUploadHandler({
-			directory: "./public/uploads",
+			directory: process.env.UPLOADS_DIR,
 			file: ({filename}) => filename,
 		}),
 		unstable_createMemoryUploadHandler(),
