@@ -47,7 +47,7 @@ export default function RecipeRoute() {
 			<Link to="..">Revenir à la liste des recettes</Link>
 			<section className="mx-2 ring ring-slate-300 bg-slate-200 px-5 py-4 rounded-lg">
 				<h2 className="text-xl">{recipe.title}</h2>
-				{recipe.image && <img src={"/uploads/" + recipe.image} alt=""/>}
+				{recipe.image && <img src={"/images/" + recipe.image} alt=""/>}
 				<div className="py-3">
 					<span className="text-l">Ingrédients:</span>
 					<ul className="marker:text-sky-400 list-disc pl-5 text-slate-500">
